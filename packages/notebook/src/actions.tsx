@@ -989,20 +989,27 @@ export namespace NotebookActions {
     notebook.mode = 'command';
 
     const newCells = values.map(cell => {
+      //console.log('cell', cell)
+
       switch (cell.cell_type) {
         case 'code':
+          let newCell = null;
           if (
             notebook.lastClipboardInteraction === 'cut' &&
             typeof cell.id === 'string'
           ) {
             let cell_id = cell.id as string;
-            return model.contentFactory.createCodeCell({
+
+            newCell = model.contentFactory.createCodeCell({
               id: cell_id,
               cell: cell
             });
           } else {
-            return model.contentFactory.createCodeCell({ cell });
+            newCell = model.contentFactory.createCodeCell({ cell });
           }
+          newCell.clearExecFlagsTmp();
+
+          return newCell;
         case 'markdown':
           return model.contentFactory.createMarkdownCell({ cell });
         default:

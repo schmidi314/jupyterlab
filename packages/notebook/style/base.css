@@ -83,6 +83,7 @@
 
 /* Command or edit modes */
 
+/*
 .jp-Notebook .jp-Cell:not(.jp-mod-active) .jp-InputPrompt {
   opacity: var(--jp-cell-prompt-not-active-opacity);
   color: var(--jp-cell-prompt-not-active-font-color);
@@ -92,6 +93,7 @@
   opacity: var(--jp-cell-prompt-not-active-opacity);
   color: var(--jp-cell-prompt-not-active-font-color);
 }
+*/
 
 /* cell is active */
 .jp-Notebook .jp-Cell.jp-mod-active .jp-Collapser {

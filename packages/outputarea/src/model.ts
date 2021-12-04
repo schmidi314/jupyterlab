@@ -66,6 +66,8 @@ export interface IOutputAreaModel extends IDisposable {
    */
   clear(wait?: boolean): void;
 
+  clearExecFlagsTmp(): void;
+
   /**
    * Deserialize the model from JSON.
    *
@@ -271,6 +273,10 @@ export class OutputAreaModel implements IOutputAreaModel {
       item.dispose();
     });
     this.list.clear();
+  }
+
+  clearExecFlagsTmp() {
+    console.log('CLEAR');
   }
 
   /**

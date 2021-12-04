@@ -363,8 +363,9 @@ export class Cell<T extends ICellModel = ICellModel> extends Widget {
   /**
    * Set the prompt for the widget.
    */
-  setPrompt(value: string): void {
-    this._input.setPrompt(value);
+  setPrompt(value: string, currentSession: boolean = false): void {
+    console.log('Cell.setPrompt', value, currentSession);
+    this._input.setPrompt(value, currentSession);
   }
 
   /**
@@ -794,7 +795,10 @@ export class CodeCell extends Cell<ICodeCellModel> {
     super.initializeState();
     this.loadScrolledState();
 
-    this.setPrompt(`${this.model.executionCount || ''}`);
+    this.setPrompt(
+      `${this.model.executionCount || ''}`,
+      this.model.executedInCurrentSession
+    );
     return this;
   }
 
@@ -1011,7 +1015,9 @@ export class CodeCell extends Cell<ICodeCellModel> {
   protected onStateChanged(model: ICellModel, args: IChangedArgs<any>): void {
     switch (args.name) {
       case 'executionCount':
-        this.setPrompt(`${(model as ICodeCellModel).executionCount || ''}`);
+        let executionCount = (model as ICodeCellModel).executionCount || '';
+        let currentSession = (model as ICodeCellModel).executedInCurrentSession;
+        this.setPrompt(`${executionCount}`, currentSession);
         break;
       case 'isDirty':
         if ((model as ICodeCellModel).isDirty) {

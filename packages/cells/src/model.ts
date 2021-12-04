@@ -110,6 +110,11 @@ export interface ICodeCellModel extends ICellModel {
   executionCount: nbformat.ExecutionCount;
 
   /**
+   * TODO: ADD DOCU
+   */
+  executedInCurrentSession: boolean;
+
+  /**
    * The cell outputs.
    */
   readonly outputs: IOutputAreaModel;
@@ -118,6 +123,8 @@ export interface ICodeCellModel extends ICellModel {
    * Clear execution, outputs, and related metadata
    */
   clearExecution(): void;
+
+  clearExecFlagsTmp(): void;
 }
 
 /**
@@ -714,11 +721,20 @@ export class CodeCellModel extends CellModel implements ICodeCellModel {
       : null;
   }
   set executionCount(newValue: nbformat.ExecutionCount) {
+    this._executedInCurrentSession = true;
     const oldValue = this.executionCount;
     if (newValue === oldValue) {
       return;
     }
     this.modelDB.setValue('executionCount', newValue || null);
+  }
+
+  private _executedInCurrentSession = false;
+  set executedInCurrentSession(value: boolean) {
+    this._executedInCurrentSession = value;
+  }
+  get executedInCurrentSession(): boolean {
+    return this._executedInCurrentSession;
   }
 
   /**
@@ -750,9 +766,17 @@ export class CodeCellModel extends CellModel implements ICodeCellModel {
     }
   }
 
+  clearExecFlagsTmp() {
+    this.outputs.clearExecFlagsTmp();
+    this.executionCount = null;
+    this.executedInCurrentSession = false;
+    this.metadata.delete('execution');
+  }
+
   clearExecution(): void {
     this.outputs.clear();
     this.executionCount = null;
+    this.executedInCurrentSession = false;
     this._setDirty(false);
     this.metadata.delete('execution');
   }

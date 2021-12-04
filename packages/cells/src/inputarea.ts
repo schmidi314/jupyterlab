@@ -128,7 +128,9 @@ export class InputArea extends Widget {
   /**
    * Set the prompt of the input area.
    */
-  setPrompt(value: string): void {
+  setPrompt(value: string, currentSession: boolean = false): void {
+    console.log('InputArea.setPrompt', value, currentSession);
+    this._prompt.currentSession = currentSession;
     this._prompt.executionCount = value;
   }
 
@@ -282,6 +284,8 @@ export interface IInputPrompt extends Widget {
    * The execution count of the prompt.
    */
   executionCount: string | null;
+
+  currentSession: boolean;
 }
 
 /**
@@ -307,7 +311,22 @@ export class InputPrompt extends Widget implements IInputPrompt {
     if (value === null) {
       this.node.textContent = ' ';
     } else {
-      this.node.textContent = `[${value || ' '}]:`;
+      if (this.currentSession) {
+        this.node.textContent = `[${value || ' '}]:`;
+      } else {
+        this.node.textContent = `{${value || ' '}}:`;
+      }
+    }
+  }
+
+  get currentSession() {
+    return !this.hasClass('jp-Test');
+  }
+  set currentSession(value: boolean) {
+    if (value) {
+      this.removeClass('jp-Test');
+    } else {
+      this.addClass('jp-Test');
     }
   }
 

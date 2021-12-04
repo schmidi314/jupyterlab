@@ -57,6 +57,11 @@ body[data-format='mobile'] .jp-InputArea-editor {
   user-select: none;
 }
 
+.jp-Test {
+  opacity: var(--jp-cell-prompt-not-active-opacity);
+  color: var(--jp-cell-prompt-not-active-font-color);
+}
+
 body[data-format='mobile'] .jp-InputPrompt {
   flex: 0 0 auto;
   text-align: left;
