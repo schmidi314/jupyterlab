@@ -721,6 +721,7 @@ export class CodeCellModel extends CellModel implements ICodeCellModel {
       : null;
   }
   set executionCount(newValue: nbformat.ExecutionCount) {
+    this.sessionPreviosity = 0;
     const oldValue = this.executionCount;
     if (newValue === oldValue) {
       return;
@@ -728,8 +729,21 @@ export class CodeCellModel extends CellModel implements ICodeCellModel {
     this.modelDB.setValue('executionCount', newValue || null);
   }
 
+  static SPstr = 'session_previosity';
   get sessionPreviosity(): number {
-    return 0;
+    if (this.metadata.has(CodeCellModel.SPstr)) {
+      return this.metadata.get(CodeCellModel.SPstr) as number;
+    } else {
+      return 0;
+    }
+  }
+  set sessionPreviosity(value: number) {
+    this.metadata.set(CodeCellModel.SPstr, value);
+    //console.log('sp', value)
+    // quick and dirty trigger of re-rendering
+    let ecOld = this.executionCount;
+    this.modelDB.setValue('executionCount', 12345);
+    this.modelDB.setValue('executionCount', ecOld);
   }
 
   /**

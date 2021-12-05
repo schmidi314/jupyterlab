@@ -7,7 +7,7 @@ import {
   Printing,
   showDialog
 } from '@jupyterlab/apputils';
-import { isMarkdownCellModel } from '@jupyterlab/cells';
+import { CodeCellModel, isMarkdownCellModel } from '@jupyterlab/cells';
 import { PageConfig } from '@jupyterlab/coreutils';
 import { DocumentRegistry, DocumentWidget } from '@jupyterlab/docregistry';
 import { Kernel, KernelMessage, Session } from '@jupyterlab/services';
@@ -82,6 +82,15 @@ export class NotebookPanel extends DocumentWidget<Notebook, INotebookModel> {
         }
       }
     });
+  }
+
+  incrementCodeCellSessionPreviosity() {
+    const cells = this.model!.cells;
+    for (let n = 0; n < cells.length; n++) {
+      if (cells.get(n).type == 'code') {
+        (cells.get(n) as CodeCellModel).sessionPreviosity++;
+      }
+    }
   }
 
   _onSave(
@@ -226,6 +235,10 @@ export class NotebookPanel extends DocumentWidget<Notebook, INotebookModel> {
       /* no-op */
     } else {
       this._autorestarting = false;
+    }
+
+    if (status == 'restarting' || status == 'starting') {
+      this.incrementCodeCellSessionPreviosity();
     }
   }
 

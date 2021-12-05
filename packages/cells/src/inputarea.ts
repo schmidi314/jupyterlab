@@ -308,10 +308,23 @@ export class InputPrompt extends Widget implements IInputPrompt {
     executionCount: string,
     sessionPreviosity: number
   ): void {
+    /*
     let bracketLeft = sessionPreviosity == 0 ? '[' : '{';
     let bracketRight = sessionPreviosity == 0 ? ']' : '}';
-    this.node.textContent = bracketLeft + executionCount + bracketRight;
-    if (sessionPreviosity == 0) {
+    */
+    /*
+    let bracketLeft = (sessionPreviosity == 0 || executionCount == '') ? '[' : '\u29D8';
+    let bracketRight = (sessionPreviosity == 0 || executionCount == '') ? ']' : '\u29D9';
+    */
+    let bracketLeft =
+      sessionPreviosity == 0 || executionCount == '' ? '[' : '\u29DA';
+    let bracketRight =
+      sessionPreviosity == 0 || executionCount == '' ? ']' : '\u29DB';
+
+    this.node.textContent = bracketLeft + executionCount + bracketRight + ':';
+    if (executionCount == '') {
+      this.node.title = 'not executed';
+    } else if (sessionPreviosity == 0) {
       this.node.title = 'executed in current session';
     } else if (sessionPreviosity == 1) {
       this.node.title = 'executed in previous session';

@@ -657,7 +657,7 @@ export class SessionContext implements ISessionContext {
     }
     this._isRestarting = true;
     this._isReady = false;
-    this._statusChanged.emit('restarting');
+    //this._statusChanged.emit('restarting');
     try {
       await this.session?.kernel?.restart();
       this._isReady = true;
