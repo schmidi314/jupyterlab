@@ -110,6 +110,13 @@ export interface ICodeCellModel extends ICellModel {
   executionCount: nbformat.ExecutionCount;
 
   /**
+   * Indicates in which session the cell has been executed.
+   *   0    -  present session
+   *   n>0  -  (pre-)^n vious session
+   */
+  sessionPreviosity: number;
+
+  /**
    * The cell outputs.
    */
   readonly outputs: IOutputAreaModel;
@@ -719,6 +726,10 @@ export class CodeCellModel extends CellModel implements ICodeCellModel {
       return;
     }
     this.modelDB.setValue('executionCount', newValue || null);
+  }
+
+  get sessionPreviosity(): number {
+    return 0;
   }
 
   /**

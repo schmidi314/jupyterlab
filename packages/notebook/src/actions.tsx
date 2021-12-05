@@ -1964,7 +1964,7 @@ namespace Private {
               cell.model.type === 'code' &&
               (cell as CodeCell).model.executionCount == null
             ) {
-              cell.setPrompt('');
+              cell.setPrompt('', 0);
             }
           });
         } else {

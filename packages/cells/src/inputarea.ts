@@ -128,8 +128,11 @@ export class InputArea extends Widget {
   /**
    * Set the prompt of the input area.
    */
-  setPrompt(value: string): void {
-    this._prompt.executionCount = value;
+  setPrompt(executionCount: string, sessionPreviosity: number): void {
+    this._prompt.setExecutionCountAndSessionPreviosity(
+      executionCount,
+      sessionPreviosity
+    );
   }
 
   /**
@@ -278,10 +281,15 @@ export namespace InputArea {
  * The interface for the input prompt.
  */
 export interface IInputPrompt extends Widget {
-  /**
-   * The execution count of the prompt.
+  /** Set all information to display
+   *
+   * @param executionCount - the how-many'th execution in a session
+   * @param sessionPreviosity - evaluated in which session: 0 for current session; 1, 2, .. n for the (pre-)^n vious session
    */
-  executionCount: string | null;
+  setExecutionCountAndSessionPreviosity(
+    executionCount: string,
+    sessionPreviosity: number
+  ): void;
 }
 
 /**
@@ -296,20 +304,12 @@ export class InputPrompt extends Widget implements IInputPrompt {
     this.addClass(INPUT_PROMPT_CLASS);
   }
 
-  /**
-   * The execution count for the prompt.
-   */
-  get executionCount(): string | null {
-    return this._executionCount;
+  setExecutionCountAndSessionPreviosity(
+    executionCount: string,
+    sessionPreviosity: number
+  ): void {
+    let bracketLeft = sessionPreviosity == 0 ? '[' : '{';
+    let bracketRight = sessionPreviosity == 0 ? ']' : '}';
+    this.node.textContent = bracketLeft + executionCount + bracketRight;
   }
-  set executionCount(value: string | null) {
-    this._executionCount = value;
-    if (value === null) {
-      this.node.textContent = ' ';
-    } else {
-      this.node.textContent = `[${value || ' '}]:`;
-    }
-  }
-
-  private _executionCount: string | null = null;
 }

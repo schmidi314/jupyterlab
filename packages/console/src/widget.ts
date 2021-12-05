@@ -674,7 +674,7 @@ export class CodeConsole extends Widget {
       } else if (value && value.content.status === 'error') {
         each(this._cells, (cell: CodeCell) => {
           if (cell.model.executionCount === null) {
-            cell.setPrompt('');
+            cell.setPrompt('', 0);
           }
         });
       }

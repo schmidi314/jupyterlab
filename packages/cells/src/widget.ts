@@ -363,8 +363,8 @@ export class Cell<T extends ICellModel = ICellModel> extends Widget {
   /**
    * Set the prompt for the widget.
    */
-  setPrompt(value: string): void {
-    this._input.setPrompt(value);
+  setPrompt(executionCount: string, sessionPreviosity: number): void {
+    this._input.setPrompt(executionCount, sessionPreviosity);
   }
 
   /**
@@ -793,9 +793,18 @@ export class CodeCell extends Cell<ICodeCellModel> {
   initializeState(): this {
     super.initializeState();
     this.loadScrolledState();
-
-    this.setPrompt(`${this.model.executionCount || ''}`);
+    this.updatePromptFromModel();
     return this;
+  }
+
+  /**
+   * Update the input prompt from model information.
+   */
+  updatePromptFromModel(): void {
+    this.setPrompt(
+      `${this.model.executionCount || ''}`,
+      this.model.sessionPreviosity
+    );
   }
 
   /**
@@ -1011,7 +1020,7 @@ export class CodeCell extends Cell<ICodeCellModel> {
   protected onStateChanged(model: ICellModel, args: IChangedArgs<any>): void {
     switch (args.name) {
       case 'executionCount':
-        this.setPrompt(`${(model as ICodeCellModel).executionCount || ''}`);
+        this.updatePromptFromModel();
         break;
       case 'isDirty':
         if ((model as ICodeCellModel).isDirty) {
@@ -1113,7 +1122,7 @@ export namespace CodeCell {
     const { recordTiming } = metadata;
     model.clearExecution();
     cell.outputHidden = false;
-    cell.setPrompt('*');
+    cell.setPrompt('*', 0);
     model.trusted = true;
     let future:
       | Kernel.IFuture<
@@ -1184,7 +1193,7 @@ export namespace CodeCell {
       // If we started executing, and the cell is still indicating this
       // execution, clear the prompt.
       if (future && !cell.isDisposed && cell.outputArea.future === future) {
-        cell.setPrompt('');
+        cell.setPrompt('', 0);
       }
       throw e;
     }
