@@ -35,9 +35,9 @@ export namespace galata {
     },
     '@jupyterlab/apputils-extension:themes': {
       overrides: {
-        'content-font-family': 'DejaVu Sans',
-        'ui-font-family': 'DejaVu Sans',
-        'code-font-family': 'DejaVu Sans Mono'
+        'content-font-family': 'Arial',
+        'ui-font-family': 'Arial',
+        'code-font-family': 'Courier New'
       }
     }
   };
