@@ -17,7 +17,9 @@ module.exports = {
     viewport: { width: 1024, height: 768 },
 
     // Artifacts
-    video: 'retain-on-failure'
+    video: 'retain-on-failure',
+
+    browserName: 'firefox'
   },
   expect: { toMatchSnapshot: { threshold: 0.3 } }
 } as PlaywrightTestConfig;
