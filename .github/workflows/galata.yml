@@ -34,8 +34,8 @@ jobs:
       - name: Install browser
         run: |
           cd galata
-          # Install only Firefox browser
-          jlpm playwright install firefox 
+          # Install only Chromium browser
+          jlpm playwright install chromium
           jlpm run build
 
       - name: Wait for JupyterLab
