@@ -36,8 +36,8 @@ export namespace galata {
     '@jupyterlab/apputils-extension:themes': {
       overrides: {
         'content-font-family': 'Arial',
-        'ui-font-family': 'Arial',
-        'code-font-family': 'Arial'
+        'ui-font-family': 'Arial'
+        //'code-font-family': 'Arial'
       }
     }
   };
