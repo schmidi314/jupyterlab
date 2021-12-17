@@ -37,7 +37,7 @@ export namespace galata {
       overrides: {
         'content-font-family': 'Arial',
         'ui-font-family': 'Arial',
-        'code-font-family': 'Courier New'
+        'code-font-family': 'Courier'
       }
     }
   };
